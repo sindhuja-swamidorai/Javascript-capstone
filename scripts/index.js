@@ -64,12 +64,20 @@ function loadCategories() {
 function displayTodos() {
 
     let table = document.getElementById("todosTable");
+    let summary = document.getElementById("summary");
 
     let userId = document.getElementById("users");
     let category = document.getElementById("categories");
+    let high = document.getElementById("high");
+    let medium = document.getElementById("medium");
+    let low = document.getElementById("low");
 
-    console.log(userId.value);
-    console.log(category.value);
+    console.log("High : " + high.checked);
+    console.log("Medium : " + medium.checked);
+    console.log("Low : " + low.checked);
+
+    //console.log(userId.value);
+    //console.log(category.value);
 
         let fetch_url = `http://localhost:8083/api/todos/`;
 
@@ -96,7 +104,12 @@ function displayTodos() {
                 cell5.innerHTML = "Completed";
 
                 //console.log(data);
-    
+                let totalTodos = 0;
+                let pendingTodos = 0;
+                let highTodos = 0;
+                let mediumTodos = 0;
+                let lowTodos = 0;
+
                 for(let todo of data) 
                 {
                     if ((userId.value != -1) && (todo.userid != userId.value)) {
@@ -106,8 +119,23 @@ function displayTodos() {
                     {
                         continue;
                     }
-                        let userName = getName(todo.userid);
-                        console.log("userName :" + userName);
+
+                    if ((todo.priority === "High") && (high.checked === false))
+                    {
+                        continue;
+                    }
+                    if ((todo.priority === "Medium") && (medium.checked === false))
+                    {
+                        continue;
+                    }
+                    if ((todo.priority === "Low") && (low.checked === false))
+                    {
+                        continue;
+                    }
+
+                    totalTodos ++;
+                        //let userName = getName(todo.userid);
+                        //console.log("userName :" + userName);
 
                         let row = table.insertRow(-1);
                         let cell1 = row.insertCell(0);
@@ -120,11 +148,32 @@ function displayTodos() {
                         cell3.innerHTML = todo.deadline;
                         cell4.innerHTML = todo.priority;
                         cell5.innerHTML = todo.completed;
+                        if (todo.completed === false) {
+                            pendingTodos ++;
+                            switch(todo.priority) {
+                                case "High":
+                                    highTodos++;
+                                    break;
+                                case "Medium":
+                                    mediumTodos++;
+                                    break;
+                                default:
+                                    lowTodos++;
+                            } 
+                        }
+
+                }
+                summary.innerHTML = `Total: ${totalTodos}, Pending: ${pendingTodos}, 
+                                     High: ${highTodos}, Medium: ${mediumTodos}, Low: ${lowTodos}`;
+
+                if (totalTodos === 0) {
+                    table.deleteRow(0);
                 }
             })
             .catch(err => {
                 console.log("Not able to display Todos");
             });
+
 }
 
 
@@ -178,16 +227,16 @@ let usersList = {};
 
 let fetch_url = `http://localhost:8083/api/users/`;
     
-let resolvedProm = fetch(fetch_url)
+fetch(fetch_url)
 .then(response => response.json())
 .then(data => 
 {
-    console.log(data);
+    //console.log(data);
     for (let user of data){
-        console.log("Got user id: "+ user.id);
-        console.log("Given user id "+ userid)
+        //console.log("Got user id: "+ user.id);
+        //console.log("Given user id "+ userid)
         if (user.id == userid) {
-            console.log("Matched ID");
+            //console.log("Matched ID");
             htmlElem.innerHTML = user.name;
         }
     }
@@ -196,16 +245,6 @@ let resolvedProm = fetch(fetch_url)
     console.log("Error retrieving user data")
 })
 
-
-/* console.log("Given list " + usersList);
-for (let user of usersList){
-    if (user.userid == userid) {
-        console.log("Matched ID");
-        return user.name;
-    }
-}
-*/
-console.log("Resolved Promise :" + JSON.stringify(resolvedProm));
 return userName;
 
 }
