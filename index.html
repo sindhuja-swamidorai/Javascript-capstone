@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stay Organized Index Page</title>
+</head>
+<body>
+    <div class="container">
+    <form action="new-todo.html">
+    <label for="users" class="form-label">Users</label>
+    <select name="users" id="users" class="form-control" required >
+    </select>
+    <label for="categories" class="form-label">Categories</label>
+    <select name="categories" id="categories" class="form-control" required >
+    </select>
+    </form>
+    <br>
+    <input type="submit" id="getBtn" name="GET" value="GET">
+    <br/>
+
+    <div id="info">
+        <table id="todosTable">
+        </table>    
+    </div>
+    <script src="scripts/index.js"></script>
+   
+</body>
+</html>
