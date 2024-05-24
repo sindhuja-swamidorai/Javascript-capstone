@@ -97,11 +97,11 @@ function displayTodos() {
                 let cell3 = row.insertCell(2);
                 let cell4 = row.insertCell(3);
                 let cell5 = row.insertCell(4);
-                cell1.innerHTML = "Category";
-                cell2.innerHTML = "User";
-                cell3.innerHTML = "Deadline";
-                cell4.innerHTML = "Priority";
-                cell5.innerHTML = "Completed";
+                cell1.innerText = "Category";
+                cell2.innerText = "User";
+                cell3.innerText = "Deadline";
+                cell4.innerText = "Priority";
+                cell5.innerText = "Completed";
 
                 //console.log(data);
                 let totalTodos = 0;
@@ -143,11 +143,12 @@ function displayTodos() {
                         let cell3 = row.insertCell(2);
                         let cell4 = row.insertCell(3);
                         let cell5 = row.insertCell(4);
-                        cell1.innerHTML = todo.category;
+                        cell1.innerText = todo.category;
+                        //cell2.innerText = getName(todo.userid);
                         setUserName(cell2, todo.userid);
-                        cell3.innerHTML = todo.deadline;
-                        cell4.innerHTML = todo.priority;
-                        cell5.innerHTML = todo.completed;
+                        cell3.innerText = todo.deadline;
+                        cell4.innerText = todo.priority;
+                        cell5.innerText = todo.completed;
                         if (todo.completed === false) {
                             pendingTodos ++;
                             switch(todo.priority) {
@@ -185,8 +186,8 @@ let userName = "TEST TEST";
 let usersList = {};
 
 let fetch_url = `http://localhost:8083/api/users/`;
-    
-let resolvedProm = fetch(fetch_url)
+
+fetch(fetch_url)
 .then(response => response.json())
 .then(data => 
 {
@@ -196,25 +197,17 @@ let resolvedProm = fetch(fetch_url)
         console.log("Given user id "+ userid)
         if (user.id == userid) {
             console.log("Matched ID");
+            console.log("Matched user name "+ user.name);
             return user.name;
         }
     }
 })
 .catch(err => {
     console.log("Error retrieving user data")
-})
+});
 
-
-/* console.log("Given list " + usersList);
-for (let user of usersList){
-    if (user.userid == userid) {
-        console.log("Matched ID");
-        return user.name;
-    }
-}
-*/
-console.log("Resolved Promise :" + JSON.stringify(resolvedProm));
-return userName;
+console.log("Got user name "+ userName);
+//return userName;
 
 }
 
@@ -222,8 +215,6 @@ function setUserName(htmlElem, userid)
 {
 
 let userName = "TEST TEST";
-
-let usersList = {};
 
 let fetch_url = `http://localhost:8083/api/users/`;
     
@@ -237,7 +228,7 @@ fetch(fetch_url)
         //console.log("Given user id "+ userid)
         if (user.id == userid) {
             //console.log("Matched ID");
-            htmlElem.innerHTML = user.name;
+            htmlElem.innerText = user.name;
         }
     }
 })

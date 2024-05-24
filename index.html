@@ -9,7 +9,6 @@
     <link href="css/styles.css" rel="stylesheet" type="text/css"></head>
 <body>
 <div class="container bg-img">
-    <div>
     <header>
         <nav class="nav navbar navbar-expand-md">
             <div class="container-fluid">
@@ -22,31 +21,35 @@
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="user-todo.html">Goto User Page</a>
+                        <a class="nav-link active" aria-current="page" href="index.html" active>Home</a>
+                      </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="user-todo.html">List My Todos</a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="new-todo.html">Add New Todo</a>
+                        <a class="nav-link" href="new-todo.html"> Add New Todo</a>
                       </li>
                 </ul>
               </div>
             </div>
         </nav>
         <div class="text-center">
-            <h1> Stay Organized </h1>
+            <h1> KeepNotes</h1>
         </div>
-        </header>
-    <div class="text-md-center">
-        <form action="new-todo.html">
-        <div class="users text-md-center">
+    </header>
+    <main>
+    <div>
+        <form>
+        <div class="users">
             <label for="users" class="form-label">
-                <h4>Browse by users</h4>
+                <h4>Select by user</h4>
             </label>
             <select name="users" id="users" class="form-control" required >
             </select>
         </div>
-        <div class="categories text-md-center">
+        <div class="categories">
             <label for="categories" class="form-label">
-                <h4>Browse by categories</h4>
+                <h4>select by category</h4>
             </label>
             <select name="categories" id="categories" class="form-control" required >
             </select>
@@ -66,19 +69,27 @@
             <label class="form-check-label" for="low">Low</label>
        </div>  
         </br><br>
+        <div class="text-md-center">
         <input type="submit" id="getBtn" name="GET" value="Quick View">
+        </div>
         <br/>
         </div>
-    </div>
-    <div id="info">
+        <div id="info">
             <p id="summary"></p>
             <table id="todosTable">
             </table>    
+        </div>
     </div>
-    <script src="scripts/index.js"></script>
-    </div>
+    </main>
     
-    <footer>&copy@2024 by StayOrganized</footer>
+    <footer>
+        <div>
+            &copy2024 by KeepNotes
+        </div>
+    </footer>
+
+    <script src="scripts/index.js"></script>
+
 </div>
 </body>
 </html>
