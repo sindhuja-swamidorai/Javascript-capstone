@@ -1,11 +1,17 @@
 "use strict";
 
-window.onload = getInput;
+window.onload = init;
+
+function init() {
+   
+   getInput();
+}
 
 function getInput () {
     const urlParams = new URLSearchParams(location.search);
     
     let newTodo = {};
+    let newUser = {};
 
     if (urlParams.has("ADD"))
     {
@@ -21,7 +27,19 @@ function getInput () {
         addTodo(JSON.stringify(newTodo));
     }
 
-}
+    if (urlParams.has("ADD-USER"))
+    {
+      newUser.name = urlParams.get("name");
+      newUser.username = urlParams.get("password");
+      newUser.password = urlParams.get("description");
+
+      console.log(newUser);
+      console.log(JSON.stringify(newUser));
+
+      addUser(JSON.stringify(newUser));
+    }
+
+   }
 
 function addTodo(newTodo) {
 
@@ -36,13 +54,14 @@ function addTodo(newTodo) {
        const container = 
           document.getElementById('divMessage');
 
-       for (let elem in data) {
-       // display one course property in a <p>
        const todo = document.createElement('p');
-       todo.textContent = `${elem}: ${data[elem]}`;
+       todo.textContent = "Successfully added Todo. Redirecting to home page...";
        container.appendChild(todo);   
+       setTimeout(() => {
+         window.location.replace("index.html");
+       }, "2000");
        // repeat for each field you want to display
-       }})
+       })
       .catch(error => {
          const container = 
          document.getElementById('divMessage');
@@ -67,4 +86,51 @@ function addTodo(newTodo) {
        });
 }
 
+function matchPasswords() {
+   let formData = document.getElementById("newUserForm");
 
+   if (formData.elements['ConfirmPassword'] === formData.elements['Password'])
+   {
+      formData.elements['ConfirmPassword'].setCustomValidity("Passwords do not match.Please try again")
+      formData.elements['ConfirmPassword'].classList.add("is-invalid");
+   }
+   else
+   {
+      formData.elements['ConfirmPassword'].setCustomValidity("")
+      formData.elements['ConfirmPassword'].classList.remove("is-invalid");
+      formData.elements['ConfirmPassword'].classList.add("is-valid");
+   }
+}
+
+function addUser(newUser) {
+
+   fetch('http://localhost:8083/api/users/', {
+      method: "POST",
+      body: newUser,
+      headers: { "Content-type": "application/json; charset = UTF-8" }
+      })
+    .then(response => response.json())
+    .then(data => {
+       // this returns a single course!
+       const container = 
+          document.getElementById('divMessage');
+
+       const todo = document.createElement('p');
+       todo.textContent = "Successfully added User. Redirecting to home page...";
+       container.appendChild(todo);   
+       setTimeout(() => {
+         window.location.replace("index.html");
+       }, "2000");
+       // repeat for each field you want to display
+       })
+      .catch(error => {
+         const container = 
+         document.getElementById('divMessage');
+
+         const todo = document.createElement('p');
+         todo.textContent = `ERROR !!!`;
+         container.appendChild(todo);   
+         // handle errors that occurred during the fetch request
+       });
+   
+ }

@@ -30,6 +30,9 @@
                       <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="new-todo.html"> Add New Todo</a>
                       </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="new-user.html"> Add New User</a>
+                      </li>
                 </ul>
               </div>
             </div>
@@ -42,17 +45,17 @@
     <main>
     <div>
     <h4>Add new todo</h4>
-    <form action="common.html">
+    <form id="newTodoForm" action="common.html">
     <label for="users" class="form-label">Choose a user:</label>
-    <select name="users" id="users" class="form-control" required >
+    <select name="users" id="users" class="form-control">
     </select>
     <label for="categories" class="form-label">Choose a category:</label>
-    <select name="categories" id="categories" class="form-control" required >
+    <select name="categories" id="categories" class="form-control">
     </select>
     <label for="description" class="form-label">Description:</label>
-    <input type="text" id="description" name="description" class="form-control" required>
+    <input type="text" id="description" name="description" class="form-control">
     <label for="deadline" class="form-label">Deadline:</label>
-    <input type="date" id="deadline" name="deadline" class="form-control" required>
+    <input type="date" id="deadline" name="deadline" class="form-control">
     <label for="priority" class="form-label">Priority:</label>
     <select name="priority" id="priority" class="form-control" required>
         <option value="high">High</option>
@@ -61,7 +64,7 @@
     </select>
     <br>
     <input type="submit" name="ADD" value="ADD"> &nbsp 
-    <input type="submit" name="CANCEL" value="CANCEL">
+    <input type="button" name="CANCEL" value="CANCEL">
     <br/>
     </form>
     </div>

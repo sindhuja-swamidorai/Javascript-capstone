@@ -4,8 +4,13 @@ window.onload = init;
 
 function init() {
 
+    let formData = document.getElementById("newTodoForm");
+
     loadUsers();
     loadCategories();
+
+    formData.addEventListener("submit",checkFormData);
+    formData.addEventListener("change",checkFormData);
 }
 
 function loadUsers() {
@@ -55,52 +60,64 @@ function loadCategories() {
         });
 }
 
-function displayTodos() {
+function checkFormData(event) {
 
-    let table = document.getElementById("todos");
+    let formData = document.getElementById("newTodoForm");
+    //console.log(formData.elements);
+    console.log("Check form elements ---");
 
-    let userId = document.getElementById("users");
-
-    let fetch_url = `http://localhost:8083/api/todos/byuser/${userId.value}`;
-
-    console.log("Table length is "+ table.rows.length)
-
-    for (let i=table.rows.length-1; i >= 0 ; i--) {
-        table.deleteRow(i);
+    if (formData.elements['users'].selectedIndex == 0) {
+        formData.elements['users'].setCustomValidity("Not a valid user! Please select a user from the list.")
+        formData.elements['users'].classList.add("is-invalid");
+        event.preventDefault();
+    } 
+    else {
+        formData.elements['users'].setCustomValidity("")
+        formData.elements['users'].classList.remove("is-invalid");
+        formData.elements['users'].classList.add("is-valid");
     }
 
-    fetch(fetch_url)
-        .then(response => response.json())
-        .then(data => 
-        {
-            let row = table.insertRow(-1);
-            let cell1 = row.insertCell(0);
-            let cell2 = row.insertCell(1);
-            let cell3 = row.insertCell(2);
-            let cell4 = row.insertCell(3);
-            let cell5 = row.insertCell(4);
-            cell1.innerHTML = "Category";
-            cell2.innerHTML = "Description";
-            cell3.innerHTML = "Deadline";
-            cell4.innerHTML = "Priority";
-            cell5.innerHTML = "Completed";
+    if (formData.elements['categories'].selectedIndex == 0) {
+        formData.elements['categories'].setCustomValidity("Not a valid category! Please select a category from the list")
+        formData.elements['categories'].classList.add("is-invalid");
+        event.preventDefault();
+    } 
+    else {
+        formData.elements['categories'].setCustomValidity("")
+        formData.elements['categories'].classList.remove("is-invalid");
+        formData.elements['categories'].classList.add("is-valid");
+    }
 
-            for(let todo of data) 
-            {
-                    let row = table.insertRow(-1);
-                    let cell1 = row.insertCell(0);
-                    let cell2 = row.insertCell(1);
-                    let cell3 = row.insertCell(2);
-                    let cell4 = row.insertCell(3);
-                    let cell5 = row.insertCell(4);
-                    cell1.innerHTML = todo.category;
-                    cell2.innerHTML = todo.description;
-                    cell3.innerHTML = todo.deadline;
-                    cell4.innerHTML = todo.priority;
-                    cell5.innerHTML = todo.completed;
-            }
-        })
-        .catch(err => {
-            console.log("Not able to display Todos");
-        });
+    if (formData.elements['description'].value === "") {
+        formData.elements['description'].setCustomValidity("Description cannot be empty!")
+        formData.elements['description'].classList.add("is-invalid");
+        event.preventDefault();
+    } 
+    else {
+        formData.elements['description'].setCustomValidity("")
+        formData.elements['description'].classList.remove("is-invalid");
+        formData.elements['description'].classList.add("is-valid");
+    }    
+
+    let date = new Date(formData.elements['deadline'].value);
+    
+    if ( Object.prototype.toString.call(date) === "[object Date]") {
+        if ( !isNaN(date.getTime()) )         
+        {
+            formData.elements['deadline'].classList.remove("is-invalid");
+            formData.elements['deadline'].setCustomValidity("")
+            formData.elements['deadline'].classList.add("is-valid");
+        } 
+        else {
+            formData.elements['deadline'].setCustomValidity("Invalid date format. Please enter a valid date!")
+            formData.elements['deadline'].classList.add("is-invalid");
+           event.preventDefault();
+       }
+    }
+    else {
+        formData.elements['deadline'].setCustomValidity("Invalid date format. Please enter a valid date!")
+        formData.elements['deadline'].classList.add("is-invalid");
+        event.preventDefault();
+    }
+
 }

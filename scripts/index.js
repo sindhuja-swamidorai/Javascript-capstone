@@ -91,7 +91,7 @@ function displayTodos() {
             .then(response => response.json())
             .then(data => 
             {
-                let row = table.insertRow(-1);
+                let row = table.insertRow (-1);
                 let cell1 = row.insertCell(0);
                 let cell2 = row.insertCell(1);
                 let cell3 = row.insertCell(2);
@@ -102,6 +102,7 @@ function displayTodos() {
                 cell3.innerText = "Deadline";
                 cell4.innerText = "Priority";
                 cell5.innerText = "Completed";
+                row.style.fontWeight = "bold";
 
                 //console.log(data);
                 let totalTodos = 0;
@@ -144,8 +145,8 @@ function displayTodos() {
                         let cell4 = row.insertCell(3);
                         let cell5 = row.insertCell(4);
                         cell1.innerText = todo.category;
-                        //cell2.innerText = getName(todo.userid);
-                        setUserName(cell2, todo.userid);
+                        cell2.innerText = getName(todo.userid);
+                        //setUserName(cell2, todo.userid);
                         cell3.innerText = todo.deadline;
                         cell4.innerText = todo.priority;
                         cell5.innerText = todo.completed;
@@ -164,8 +165,18 @@ function displayTodos() {
                         }
 
                 }
-                summary.innerHTML = `Total: ${totalTodos}, Pending: ${pendingTodos}, 
-                                     High: ${highTodos}, Medium: ${mediumTodos}, Low: ${lowTodos}`;
+                let summaryText = `Total: ${totalTodos}, Pending: ${pendingTodos}`;
+                if (high.checked) {
+                    summaryText += `, High: ${highTodos}`
+                }
+                if (medium.checked) {
+                    summaryText += `, Medium: ${mediumTodos}`
+                }
+                if (low.checked) {
+                    summaryText += `, Low: ${lowTodos}`
+                }
+                summary.innerHTML = summaryText; //`Total: ${totalTodos}, Pending: ${pendingTodos}, 
+                                    // High: ${highTodos}, Medium: ${mediumTodos}, Low: ${lowTodos}`;
 
                 if (totalTodos === 0) {
                     table.deleteRow(0);
@@ -175,39 +186,27 @@ function displayTodos() {
                 console.log("Not able to display Todos");
             });
 
+            todosTable.style.overflow = "hidden";
+            todosTable.style.overflowY = "scroll";
+            todosTable.style.height = "10%";
 }
 
 
 function getName(userid)
 {
 
-let userName = "TEST TEST";
+    let userSelection = document.getElementById("users");
 
-let usersList = {};
+    for (let option of userSelection.options){
 
-let fetch_url = `http://localhost:8083/api/users/`;
-
-fetch(fetch_url)
-.then(response => response.json())
-.then(data => 
-{
-    console.log(data);
-    for (let user of data){
-        console.log("Got user id: "+ user.id);
-        console.log("Given user id "+ userid)
-        if (user.id == userid) {
-            console.log("Matched ID");
-            console.log("Matched user name "+ user.name);
-            return user.name;
+        let id = option.value;
+        if (id == userid) {
+            //console.log(option.value);
+            //console.log(option.innerText);
+            return option.innerHTML;
         }
     }
-})
-.catch(err => {
-    console.log("Error retrieving user data")
-});
-
-console.log("Got user name "+ userName);
-//return userName;
+    return "TEST USER"
 
 }
 

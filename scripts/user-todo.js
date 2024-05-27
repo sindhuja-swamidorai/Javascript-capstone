@@ -97,7 +97,11 @@ function displayTodos() {
                     let x = document.createElement("button");
                     if(todo.completed === false) {
                         x.innerText = "Mark as complete";
-                        x.onclick = () => { x.innerText = "Completed"; x.disabled = true;};
+                        x.onclick = () => { x.innerText = "Completed"; 
+                                            row.style.color = "green";
+                                            cell4.style.backgroundColor = "transparent";
+                                            x.disabled = true;
+                                           };
                     }
                     else {
                         x.innerText = "Completed";
