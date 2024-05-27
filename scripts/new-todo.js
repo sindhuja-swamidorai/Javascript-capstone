@@ -9,6 +9,7 @@ function init() {
     loadUsers();
     loadCategories();
 
+    formData.elements["CANCEL"].onclick = gotoCommon;
     formData.addEventListener("submit",checkFormData);
     formData.addEventListener("change",checkFormData);
 }
@@ -120,4 +121,11 @@ function checkFormData(event) {
         event.preventDefault();
     }
 
+}
+
+function gotoCommon() {
+    let formData = document.getElementById("newTodoForm");
+
+    formData.removeEventListener("submit",checkFormData);
+    formData.removeEventListener("change",checkFormData);
 }

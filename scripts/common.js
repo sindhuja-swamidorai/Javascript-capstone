@@ -13,7 +13,21 @@ function getInput () {
     let newTodo = {};
     let newUser = {};
 
-    if (urlParams.has("ADD"))
+    if (urlParams.has("CANCEL"))
+    {
+      const container = 
+      document.getElementById('divMessage');
+
+      const todo = document.createElement('p');
+      todo.textContent = "Cancelling... Redirecting to home page...";
+      container.appendChild(todo);   
+      setTimeout(() => {
+         window.location.replace("index.html");
+       }, "2000");
+
+    }
+
+      if (urlParams.has("ADD"))
     {
         newTodo.userid = urlParams.get("users");
         newTodo.category = urlParams.get("categories");
@@ -30,8 +44,8 @@ function getInput () {
     if (urlParams.has("ADD-USER"))
     {
       newUser.name = urlParams.get("name");
-      newUser.username = urlParams.get("password");
-      newUser.password = urlParams.get("description");
+      newUser.username = urlParams.get("username");
+      newUser.password = urlParams.get("password");
 
       console.log(newUser);
       console.log(JSON.stringify(newUser));
@@ -86,21 +100,6 @@ function addTodo(newTodo) {
        });
 }
 
-function matchPasswords() {
-   let formData = document.getElementById("newUserForm");
-
-   if (formData.elements['ConfirmPassword'] === formData.elements['Password'])
-   {
-      formData.elements['ConfirmPassword'].setCustomValidity("Passwords do not match.Please try again")
-      formData.elements['ConfirmPassword'].classList.add("is-invalid");
-   }
-   else
-   {
-      formData.elements['ConfirmPassword'].setCustomValidity("")
-      formData.elements['ConfirmPassword'].classList.remove("is-invalid");
-      formData.elements['ConfirmPassword'].classList.add("is-valid");
-   }
-}
 
 function addUser(newUser) {
 
