@@ -52,6 +52,10 @@ function displayTodos() {
         delBtn.remove();
     }
 
+    let completedBtn = document.getElementById("completedBtn");
+    if (completedBtn) {
+        completedBtn.remove();
+    }
     fetch(fetch_url)
         .then(response => response.json())
         .then(data => 
@@ -94,7 +98,8 @@ function displayTodos() {
                     cell2.innerText = todo.description;
                     cell3.innerText = todo.deadline;
                     cell4.innerText = todo.priority;
-                    let x = document.createElement("button");
+                    cell5.innerText = todo.completed? "Completed":"Pending";
+                    /* let x = document.createElement("button");
                     if(todo.completed === false) {
                         x.innerText = "Mark as complete";
                         x.onclick = () => { x.innerText = "Completed"; 
@@ -109,6 +114,7 @@ function displayTodos() {
                     }
                     x.style.textAlign = "center";
                     cell5.append(x);
+                    */
                     
                     totalTodos++;
 
@@ -156,6 +162,13 @@ function displayTodos() {
                 delBtn.setAttribute("name", "DELETE");
                 delBtn.setAttribute("value", "DELETE");
                 formData.append(delBtn);    
+
+                completedBtn = document.createElement("INPUT");
+                completedBtn.setAttribute("id", "completedBtn");
+                completedBtn.setAttribute("type", "submit");
+                completedBtn.setAttribute("name", "COMPLETED");
+                completedBtn.setAttribute("value", "MARK AS COMPLETE");
+                formData.append(completedBtn);    
             }
 
         })

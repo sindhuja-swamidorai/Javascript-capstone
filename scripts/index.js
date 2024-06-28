@@ -61,7 +61,7 @@ function loadCategories() {
         });
 }
 
-function displayTodos() {
+async function displayTodos() {
 
     let table = document.getElementById("todosTable");
     let summary = document.getElementById("summary");
@@ -78,6 +78,14 @@ function displayTodos() {
 
     //console.log(userId.value);
     //console.log(category.value);
+
+    let users = await usersList();
+    
+    /* 
+    for (let user of users) {
+        console.log(user);
+    }
+    */
 
         let fetch_url = `http://localhost:8083/api/todos/`;
 
@@ -135,7 +143,13 @@ function displayTodos() {
                     }
 
                     totalTodos ++;
-                        //let userName = getName(todo.userid);
+                        let userName = () => { 
+                            for (let user of users) {
+                                if (user.id == todo.userid) {
+                                    return user.name;
+                                }
+                            }
+                        }
                         //console.log("userName :" + userName);
 
                         let row = table.insertRow(-1);
@@ -145,11 +159,11 @@ function displayTodos() {
                         let cell4 = row.insertCell(3);
                         let cell5 = row.insertCell(4);
                         cell1.innerText = todo.category;
-                        cell2.innerText = getName(todo.userid);
+                        cell2.innerText = userName();
                         //setUserName(cell2, todo.userid);
                         cell3.innerText = todo.deadline;
                         cell4.innerText = todo.priority;
-                        cell5.innerText = todo.completed;
+                        cell5.innerText = todo.completed ? "Yes" : "No";
                         if (todo.completed === false) {
                             pendingTodos ++;
                             switch(todo.priority) {
@@ -188,27 +202,23 @@ function displayTodos() {
 
             todosTable.style.overflow = "hidden";
             todosTable.style.overflowY = "scroll";
-            todosTable.style.height = "10%";
+            todosTable.style.height = "100px";
 }
 
-
-function getName(userid)
+async function usersList() //returns a promise
 {
 
-    let userSelection = document.getElementById("users");
-
-    for (let option of userSelection.options){
-
-        let id = option.value;
-        if (id == userid) {
-            //console.log(option.value);
-            //console.log(option.innerText);
-            return option.innerHTML;
-        }
+    let fetch_url = `http://localhost:8083/api/users/`;
+    
+    try {
+        const users = await fetch(fetch_url);
+        return users.json();
     }
-    return "TEST USER"
-
+    catch {
+        
+    }
 }
+
 
 function setUserName(htmlElem, userid)
 {
